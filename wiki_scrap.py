@@ -4,45 +4,88 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup as soup
 from selenium.webdriver.common.by import By
 from datetime import datetime
+import numpy as np
+import os
 #import re
-
-def escreve_txt(path,vetor):
-    with open(path,'a', encoding="utf-16") as outfile:
+dir_path = os.path.dirname(__file__)
+#escreve info das paginas em txt
+def escreve_txt(path,vetor,tipo):
+    with open(path,tipo, encoding="utf-16") as outfile:
         for line in vetor:
             outfile.write(str(line))
     outfile.close()
+    
+def webScrapper(url):
+    
+    global driver
+    
+    driver.get("{}".format(url))
+#    now = datetime.now()
+    source = driver.page_source
+    html = soup(source, 'html.parser')
+    
+    box = html.find("div", {"id": "bodyContent"})
+    deck = box.find("div", {"id": "mw-content-text"})
+    card = deck.find("div", {"class": "mw-parser-output"})
+    
+    p = card.find_all('p')
+    vet_txt = []
+    vet_hyper = []
+    nome = str(driver.current_url)
+    nome = nome.split('/')[-1]
+    #now = datetime.now()
+    for i in p:
+        for a in i.find_all('a', href=True):
+            if str(a['href'][0]) == '/':
+                vet_hyper.append(str(a['href'])+'\n')
+        vet_txt.append(str(i.text))
+    
+    escreve_txt("{}\\{}.txt".format(dir_path,nome),vet_txt,'w')
+    escreve_txt("{}\\{}_hyper.txt".format(dir_path,nome),vet_hyper,'w')
+    escreve_txt("{}\\todas_urls.txt".format(dir_path,nome),vet_hyper,'a')
+#    print(datetime.now()-now)
+    return vet_hyper
 
-#torna chrome driver headless
+#oções para navegador chrome
 opts = Options()
-opts.add_argument("--headless")
+#opts.add_argument("--headless")
 #opts.add_argument("--disable-gpu")
 
 #chrome driver para navegar
-chr_d = 'C:\\Users\\Lucas\\Desktop\\bullshitices\\chromedriver.exe'
+chr_d = '{}\\chromedriver.exe'.format(dir_path)
 # driver = webdriver.Chrome(executable_path = chr_d, opts)
 driver = webdriver.Chrome(options = opts,executable_path = chr_d)
 
-driver.get("https://pt.wikipedia.org/wiki/Matem%C3%A1tica")
-now = datetime.now()
-source = driver.page_source
-html = soup(source, 'html.parser')
-
-box = html.find("div", {"id": "bodyContent"})
-deck = box.find("div", {"id": "mw-content-text"})
-card = deck.find("div", {"class": "mw-parser-output"})
-
-p = card.find_all('p')
-vet_txt = []
-vet_hyper = []
-#now = datetime.now()
-for i in p:
-    for a in i.find_all('a', href=True):
-        if str(a['href'][0]) == '/':
-            vet_hyper.append(str(a['href'])+'\n')
-    vet_txt.append(str(i.text))
-
-escreve_txt("C:\\Users\\Lucas\\Desktop\\bullshitices\\matematica.txt",vet_txt)
-escreve_txt("C:\\Users\\Lucas\\Desktop\\bullshitices\\matematica_hyper.txt",vet_hyper)
-        
-print(datetime.now()-now)
+#inicialização
+try:
+    urls_lidas = open("{}\\ja_lidos.txt".format(dir_path),"r")
+    ja_lidos = urls_lidas.readlines() 
+    urls_lidas.close()
+#    print("!")
+except:
+    ja_lidos=0
+    
+if ja_lidos == 0:
+    ja_lidos = []
+    url = "https://pt.wikipedia.org/wiki/Matem%C3%A1tica"
+    ja_lidos.append(url)
+    novo_hyper = webScrapper(url)
+    fila = novo_hyper
+else:
+    url = ja_lidos[-1]
+    urls_lidas = open("{}\\todas_urls.txt".format(dir_path),"r", encoding="utf-16")
+    fila = urls_lidas.readlines() 
+    urls_lidas.close()
+urls_lidas = open("{}\\ja_lidos.txt".format(dir_path),"a+")
+#ja_lidos=[]   
+for i in range(7):
+#    print(i)
+    url = fila.pop(0)
+    if url in ja_lidos:
+        continue
+    ja_lidos.append(url)
+    urls_lidas.write(url)
+    novo_hyper = webScrapper("https://pt.wikipedia.org"+url)
+    fila=fila+novo_hyper
+urls_lidas.close()
 

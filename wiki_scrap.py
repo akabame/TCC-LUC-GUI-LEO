@@ -16,6 +16,25 @@ def escreve_txt(path,vetor,tipo):
         for line in vetor:
             outfile.write(str(line))
     outfile.close()
+
+def internet_lenta(count):
+    
+    global driver
+    
+    source = driver.page_source
+    html = soup(source, 'html.parser')
+    
+    box = html.find("div", {"id": "bodyContent"})
+    deck = box.find("div", {"id": "mw-content-text"})
+    card = deck.find("div", {"class": "mw-parser-output"})
+    
+    p = card.find_all('p')
+    if len(p) == 0 and count < 10:
+        p = internet_lenta(count+1)
+    else:
+        print('muito lenta') 
+        return p
+    return p
     
 def webScrapper(url):
     
@@ -31,6 +50,8 @@ def webScrapper(url):
     card = deck.find("div", {"class": "mw-parser-output"})
     
     p = card.find_all('p')
+    if len(p) == 0:
+        p = internet_lenta(0)    
     vet_txt = []
     vet_hyper = []
     nome = str(driver.current_url)
@@ -65,16 +86,16 @@ driver = webdriver.Chrome(options = opts,executable_path = chr_d)
 try:
     urls_lidas = open("{}\\ja_lidos.txt".format(dir_path),"r")
     ja_lidos = urls_lidas.readlines()
-#    ja_lidos = set(ja_lidos)
+    ja_lidos = set(ja_lidos)
     urls_lidas.close()
 #    print("!")
 except:
     ja_lidos=0
     
 if ja_lidos == 0:
-    ja_lidos = []
+    ja_lidos = set()
     url = "https://pt.wikipedia.org/wiki/Matem%C3%A1tica"
-    ja_lidos.append(url)
+    ja_lidos.add(url)
     novo_hyper = webScrapper(url)
     fila = novo_hyper
 else:
@@ -85,18 +106,25 @@ else:
 #ja_lidos=[]
 tempo = datetime.now()
 print('start') 
-for i in range(100):
-    print(i)
-    url = fila.pop(0)
-    if url in ja_lidos or url[0:6] != '/wiki/':
-        continue
-    ja_lidos.append(url)
-    urls_lidas = open("{}\\ja_lidos.txt".format(dir_path),"a+")
-    urls_lidas.write(url)
+for i in range(1000):
     try:
-        novo_hyper = webScrapper("https://pt.wikipedia.org"+url)
-        fila=fila+novo_hyper
-    except:
-        pass
-    urls_lidas.close()
+        print(i)
+        url = fila.pop(0)
+        if url in ja_lidos or url[0:6] != '/wiki/':
+            continue
+        ja_lidos.add(url)
+        urls_lidas = open("{}\\ja_lidos.txt".format(dir_path),"a+")
+        try:
+            novo_hyper = webScrapper("https://pt.wikipedia.org"+url)
+            fila=fila+novo_hyper
+            urls_lidas.write(url)
+        except Exception as e:
+            print(e)
+            print(url)
+            pass
+        urls_lidas.close()
+    except Exception as e:
+        print(e)
+        print('erro zuado')
+        continue        
 print(datetime.now()-tempo)

@@ -7,6 +7,21 @@ from datetime import datetime
 import numpy as np
 import os
 import time
+
+#log
+import logging
+import sys
+
+a_logger = logging.getLogger()
+a_logger.setLevel(logging.DEBUG)
+
+output_file_handler = logging.FileHandler("log_de_erros.log")
+stdout_handler = logging.StreamHandler(sys.stdout)
+
+a_logger.addHandler(output_file_handler)
+a_logger.addHandler(stdout_handler)
+
+
 #import re
 #dir_path = os.path.dirname(__file__)
 dir_path = 'C:\\Users\\Lucas\\Desktop\\bullshitices'
@@ -110,12 +125,12 @@ else:
     urls_lidas.close()
 #ja_lidos=[]
 tempo = datetime.now()
-print('start') 
+a_logger.debug('start')
 urls_a = []
 urls_d = []
-for i in range(1000):
+for i in range(100):
     try:
-        print(i)
+#        print(i)
         url = fila.pop(0).replace('\n','')
         urls_a.append(url)
         if url in ja_lidos or url[0:6] != '/wiki/':
@@ -131,13 +146,13 @@ for i in range(1000):
             fila=fila+novo_hyper
             urls_lidas.write(url+'\n')
         except Exception as e:
-            print(e)
-            print(url)
+            a_logger.debug(e)
+            a_logger.debug(url)
             pass
         urls_lidas.close()
     except Exception as e:
-        print(e)
-        print('erro zuado')
+        a_logger.debug(e)
+        a_logger.debug('erro zuado')
         continue        
-print(datetime.now()-tempo)
+a_logger.debug(datetime.now()-tempo)
 

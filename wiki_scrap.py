@@ -8,20 +8,6 @@ import numpy as np
 import os
 import time
 
-#log
-import logging
-import sys
-
-a_logger = logging.getLogger()
-a_logger.setLevel(logging.DEBUG)
-
-output_file_handler = logging.FileHandler("log_de_erros.log")
-stdout_handler = logging.StreamHandler(sys.stdout)
-
-a_logger.addHandler(output_file_handler)
-a_logger.addHandler(stdout_handler)
-
-
 #import re
 #dir_path = os.path.dirname(__file__)
 dir_path = 'C:\\Users\\Lucas\\Desktop\\bullshitices'
@@ -45,6 +31,7 @@ def internet_lenta(count):
     
     p = card.find_all('p')
     if len(p) == 0 and count < 10:
+        time.sleep(0.1)
         p = internet_lenta(count+1)
     else:
         print('muito lenta') 
@@ -125,7 +112,7 @@ else:
     urls_lidas.close()
 #ja_lidos=[]
 tempo = datetime.now()
-a_logger.debug('start')
+print('start')
 urls_a = []
 urls_d = []
 for i in range(100):
@@ -146,13 +133,13 @@ for i in range(100):
             fila=fila+novo_hyper
             urls_lidas.write(url+'\n')
         except Exception as e:
-            a_logger.debug(e)
-            a_logger.debug(url)
+            print(e)
+            print(url)
             pass
         urls_lidas.close()
     except Exception as e:
-        a_logger.debug(e)
-        a_logger.debug('erro zuado')
+        print(e)
+        print('erro zuado')
         continue        
-a_logger.debug(datetime.now()-tempo)
+print(datetime.now()-tempo)
 

@@ -10,7 +10,7 @@ import time
 
 #import re
 #dir_path = os.path.dirname(__file__)
-dir_path = 'C:\\Users\\Lucas\\Desktop\\bullshitices'
+dir_path = '/home/tccllb'
 #escreve info das paginas em txt
 def escreve_txt(path,vetor,tipo):
     with open(path,tipo, encoding="utf-16") as outfile:
@@ -70,34 +70,40 @@ def webScrapper(url):
                 vet_hyper.append(str(a['href']+'\n'))
         vet_txt.append(str(i.text))
     
-    escreve_txt("{}\\scrap_text\\{}.txt".format(dir_path,nome),vet_txt,'w')
-    escreve_txt("{}\\scrap_hyper\\{}_hyper.txt".format(dir_path,nome),vet_hyper,'w')
-    escreve_txt("{}\\todas_urls.txt".format(dir_path,nome),vet_hyper,'a')
+    nome2 = nome.replace('/',',')
+
+    escreve_txt("{}/scrap_text/{}.txt".format(dir_path,nome2),vet_txt,'w')
+    escreve_txt("{}/scrap_hyper/{}_hyper.txt".format(dir_path,nome2),vet_hyper,'w')
+    escreve_txt("{}/todas_urls.txt".format(dir_path,nome),vet_hyper,'a')
 #    print(datetime.now()-now)
     return vet_hyper,nome
 
 #oções para navegador chrome
 opts = Options()
+opts.add_argument("--no-sandbox")
+opts.add_argument("--disable-setuid-sandbox")
 opts.add_argument("--headless")
-opts.add_argument("--log-level=3")
+opts.add_argument("--log-level=9")
 #opts.add_argument("--disable-gpu")
 
 #chrome driver para navegar
-#chr_d = '{}\\chromedriver.exe'.format(dir_path)
-chr_d = 'C:\\Users\\Lucas\\Desktop\\bullshitices\\chromedriver.exe'
+chr_d = '{}/chromedriver'.format(dir_path)
+#chr_d = 'C:\\Users\\Lucas\\Desktop\\bullshitices\\chromedriver.exe'
 
 # driver = webdriver.Chrome(executable_path = chr_d, opts)
 driver = webdriver.Chrome(options = opts,executable_path = chr_d)
 
+
 #inicialização
 try:
-    urls_lidas = open("{}\\ja_lidos.txt".format(dir_path),"r")
-    ja_lidos = urls_lidas.readlines()
+    urls_lidas = open("{}/ja_lidos.txt".format(dir_path),"r")
+    urls_lidas = urls_lidas.readlines()
+    ja_lidos = [sub.replace('\n','') for sub in urls_lidas]
     ja_lidos = set(ja_lidos)
-    urls_lidas.close()
 #    print("!")
-except:
+except Exception as e:
     ja_lidos=0
+    print(e)
     
 if ja_lidos == 0:
     ja_lidos = set()
@@ -106,29 +112,29 @@ if ja_lidos == 0:
     ja_lidos.add('/wiki/'+url)
     fila = novo_hyper
 else:
-    urls_lidas = open("{}\\todas_urls.txt".format(dir_path),"r", encoding="utf-16")
+    urls_lidas = open("{}/todas_urls.txt".format(dir_path),"r", encoding="utf-16")
     fila = urls_lidas.readlines()
 #    fila = set(fila)
     urls_lidas.close()
 #ja_lidos=[]
 tempo = datetime.now()
 print('start')
-urls_a = []
-urls_d = []
-for i in range(100):
+#urls_a = []
+#urls_d = []
+while len(fila) != 0:
     try:
 #        print(i)
         url = fila.pop(0).replace('\n','')
-        urls_a.append(url)
+       # urls_a.append(url)
         if url in ja_lidos or url[0:6] != '/wiki/':
             continue
-        urls_lidas = open("{}\\ja_lidos.txt".format(dir_path),"a+")
+        urls_lidas = open("{}/ja_lidos.txt".format(dir_path),"a+")
         try:
             novo_hyper,url = webScrapper("https://pt.wikipedia.org"+url)
             if novo_hyper == 0:
                 continue
             url = '/wiki/' + url
-            urls_d.append(url)
+           # urls_d.append(url)
             ja_lidos.add(url)
             fila=fila+novo_hyper
             urls_lidas.write(url+'\n')

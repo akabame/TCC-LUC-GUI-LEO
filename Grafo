@@ -6,8 +6,6 @@ cd_path=dir_path+'/scrap_hyper'
 aresta=[]
 
 
-
-
 class Grafo(object):
     """ Implementação básica de um grafo. """
 
@@ -62,6 +60,6 @@ for i in listdir(cd_path):
     txt_lido = txt.readlines()
     arrumado=i.replace('.txt','')
     for j in txt_lido:
-        aresta.append((arrumado,j.replace('\n','').replace('/wiki/','')))
+        aresta.append((arrumado,j[6:-1]))
 grafo = Grafo(aresta, direcionado=True)
 

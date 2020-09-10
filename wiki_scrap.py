@@ -11,7 +11,10 @@ import time
 #import re
 #dir_path = os.path.dirname(__file__)
 dir_path = '/home/tccllb'
+#dir_path = 'C:\\Users\\Lucas\\Desktop\\bullshitices'
 #escreve info das paginas em txt
+todas_urls =  open(dir_path+'/todas_urls.txt','a+', encoding="utf-16")
+
 def escreve_txt(path,vetor,tipo):
     with open(path,tipo, encoding="utf-16") as outfile:
         for line in vetor:
@@ -58,8 +61,8 @@ def webScrapper(url):
     card = deck.find("div", {"class": "mw-parser-output"})
     
     p = card.find_all('p')
-    if len(p) == 0:
-        p = internet_lenta(0)    
+#    if len(p) == 0:
+#        p = internet_lenta(0)    
     vet_txt = []
     vet_hyper = []
 
@@ -74,7 +77,11 @@ def webScrapper(url):
 
     escreve_txt("{}/scrap_text/{}.txt".format(dir_path,nome2),vet_txt,'w')
     escreve_txt("{}/scrap_hyper/{}_hyper.txt".format(dir_path,nome2),vet_hyper,'w')
-    escreve_txt("{}/todas_urls.txt".format(dir_path,nome),vet_hyper,'a')
+#    escreve_txt("{}/todas_urls.txt".format(dir_path,nome),vet_hyper,'a')
+    global todas_urls
+    for line in vet_hyper:
+            todas_urls.write(str(line))
+    
 #    print(datetime.now()-now)
     return vet_hyper,nome
 
@@ -113,6 +120,7 @@ if ja_lidos == 0:
     fila = novo_hyper
 else:
     urls_lidas = open("{}/todas_urls.txt".format(dir_path),"r", encoding="utf-16")
+    
     fila = urls_lidas.readlines()
 #    fila = set(fila)
     urls_lidas.close()
@@ -121,6 +129,7 @@ tempo = datetime.now()
 print('start')
 #urls_a = []
 #urls_d = []
+ap = 0
 while len(fila) != 0:
     try:
 #        print(i)
@@ -128,6 +137,8 @@ while len(fila) != 0:
        # urls_a.append(url)
         if url in ja_lidos or url[0:6] != '/wiki/':
             continue
+        print(ap)
+        ap = ap + 1
         urls_lidas = open("{}/ja_lidos.txt".format(dir_path),"a+")
         try:
             novo_hyper,url = webScrapper("https://pt.wikipedia.org"+url)
@@ -148,4 +159,5 @@ while len(fila) != 0:
         print('erro zuado')
         continue        
 print(datetime.now()-tempo)
+todas_urls.close()
 

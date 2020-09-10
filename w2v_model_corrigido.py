@@ -12,7 +12,7 @@ txts = 'C:\\Users\\Lucas\\Desktop\\bullshitices\\bullshittext'
 corpus = []
 texto = []
 linha = []
-replaces = ['(',')','{','}','"',':',';',"'",'\n','”','“','.',',','\xa0','\u2061']
+replaces = ['(',')','{','}','"',':',';',"'",'\n','”','“','.',',','\xa0','\u2061','?','!']
 now = datetime.now()
 for filename in tqdm(os.listdir(txts),'loading'):
     if filename == 'scrap_text':

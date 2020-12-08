@@ -32,7 +32,6 @@ click==7.1.2
 colorama==0.4.4
 commonmark==0.9.1
 contextlib2==0.6.0.post1
-cryptography==3.1.1
 cycler==0.10.0
 decorator==4.4.2
 defusedxml==0.6.0
@@ -86,7 +85,6 @@ nbformat==5.0.6
 neovim-remote==2.4.0
 networkx==2.5
 nftables==0.1
-notebook==6.1.4
 numpy==1.19.1
 ordered-set==4.0.2
 packaging==20.4

@@ -1,7 +1,6 @@
 DESCRIÇÃO: \
 Esse trabalho é referente a uma plataforma de planejamento de estudos. \
 As recomendações dessa ferramenta utilizam, como base de dados, as páginas do site Wikipedia de domínio brasileiro. \
-As ferramentas utilizadas neste trabalho estão listadas abaixo 
 
 VERSÕES DOS SOFTWARES UTILIZADAS:
 
@@ -15,6 +14,8 @@ Favor entrar em contato através do email: uniflsimoes@fei.edu.br
 ARQUIVOS REFERENTES A VALIDAÇÃO DO PROJETO: 
 
 pasta "validação" é referente aos scripts utilizados para validar os modelos neste trabalho 
+
+FERRAMENTAS UTILIZADAS NESTE PROJETO
 
 GRAFOS: \
 grafos.py 

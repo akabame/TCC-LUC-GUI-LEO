@@ -9,8 +9,8 @@ bibliotecas encontram-se no arquivo "requirements.txt"
 
 BASE DE DADOS: \
 839mil páginas do wikipédias salvas em arquivos texto \
-839mil arquivos texto referentes aos hyperlinks contidos nas páginas
-Favor entrar em contato através do email: uniflsimoes@fei.edu.br
+839mil arquivos texto referentes aos hyperlinks contidos nas páginas \
+Favor entrar em contato através do email: uniflsimoes@fei.edu.br para receber acesso aos documentos
 
 
 ARQUIVOS REFERENTES A VALIDAÇÃO DO PROJETO: 

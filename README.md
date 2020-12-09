@@ -15,7 +15,7 @@ ARQUIVOS REFERENTES A VALIDAÇÃO DO PROJETO:
 
 pasta "validação" é referente aos scripts utilizados para validar os modelos neste trabalho 
 
-FERRAMENTAS UTILIZADAS NESTE PROJETO
+FERRAMENTAS UTILIZADAS NESTE PROJETO:
 
 GRAFOS: \
 grafos.py 

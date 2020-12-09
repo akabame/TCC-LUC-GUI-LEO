@@ -1,6 +1,6 @@
 DESCRIÇÃO: \
 Esse trabalho é referente a uma plataforma de planejamento de estudos. \
-As recomendações dessa ferramenta utilizam, como base de dados, as páginas do site Wikipedia de domínio brasileiro. \
+As recomendações dessa ferramenta utilizam, como base de dados, as páginas do site Wikipedia de domínio brasileiro. 
 
 VERSÕES DOS SOFTWARES UTILIZADAS:
 

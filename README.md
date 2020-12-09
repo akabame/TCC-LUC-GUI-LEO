@@ -41,7 +41,7 @@ TFIDF: \
 word_global_occurrence.py \
 word_local_occurrence.py
 
-INTERFACE
+INTERFACE \
 interface.zip
 
 

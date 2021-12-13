@@ -73,7 +73,7 @@ libvirt-python==6.8.0
 lit==0.10.1.dev0
 lockfile==0.12.2
 louis==3.15.0
-lxml==4.6.0
+lxml==4.6.5
 MarkupSafe==1.1.1
 matplotlib==3.1.2
 meson==0.55.3
